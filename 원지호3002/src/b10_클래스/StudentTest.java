@@ -17,6 +17,8 @@ public class StudentTest {
 		
 		lee.showInfo();
 		
+		System.out.println(kim);
+		System.out.println(lee);
 	}
 
 }
