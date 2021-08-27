@@ -2,21 +2,24 @@ package baekJun;
 
 import java.util.Scanner;
 
+
 public class Main {
 
 	public static void main(String[] args) {
-		// 첫째 줄에는 별 1개, 둘째 줄에는 별 2개, N번째 줄에는 별 N개를 찍는 문제
+		//정수 N개로 이루어진 수열 A와 정수 X가 주어진다.
+		//이때, A에서 X보다 작은 수를 모두 출력하는 프로그램을 작성하시오.
 		Scanner input = new Scanner(System.in);
 		
-		int x = input.nextInt();
+		int A = input.nextInt();
+		int X = input.nextInt();
 		
-		for(int i = 0; i < x; i--) {
-			int i2 = i + 1;
-			
-			for(int j = 0; j < i2; j++) {
-				System.out.print("*");
+		for(int i = 0; i <= A; i++) {
+			if(X < A) {
+				
+				System.out.print(X + " ");
+				break;
 			}
-			System.out.println();
+			
 			
 			
 		}
