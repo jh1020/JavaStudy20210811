@@ -11,14 +11,10 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 		
 		int A = input.nextInt();
-		int X = input.nextInt();
+		int B = input.nextInt();
 		
-		for(int i = 0; i <= A; i++) {
-			if(X < A) {
-				
-				System.out.print(X + " ");
-				break;
-			}
+		while(A + B <= 0) {
+			System.out.println(A + B);
 			
 			
 			
