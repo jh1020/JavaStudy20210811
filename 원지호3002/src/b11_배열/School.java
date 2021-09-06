@@ -14,12 +14,7 @@ public class School {
 		cg[0].addStudent("¼­º¸°æ");
 		cg[0].addStudent("¹ÚÈ£ÈÆ");
 		
-		cg[1].addStudent("¿øÁöÈ£");
-		cg[1].addStudent("±è»ó¾ğ");
-		cg[1].addStudent("µ¿¹Î±Ô");
-		cg[1].addStudent("±èÇü¹Î");
-		
-		cg[1].classInfo(20210003);
+		cg[0].classInfo(20210003);
 		
 	}
 }
