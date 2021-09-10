@@ -16,6 +16,14 @@ public class Animals {
 		a[1] = new Tiger();
 		a[2] = new Eagle();
 		
+		for(int i = 0;i < a.length; i++) {
+			Animal ani = a[i];
+			ani.move();
+			
+		}
+		
+		
+		
 		for (Animal ani : a) {
 			ani.move();
 		}
@@ -25,7 +33,7 @@ public class Animals {
 
 		class Human extends Animal{
 			@Override
-			public void move() {
+			protected void move() {
 				System.out.println("사람이 뜁니다.");
 			}
 			
@@ -35,7 +43,7 @@ public class Animals {
 		class Tiger extends Animal{
 			
 			@Override
-			public void move() {
+			protected void move() {
 				System.out.println("호랑이가 네발로 걷습니다.");
 			}
 			
@@ -44,7 +52,7 @@ public class Animals {
 		
 		class Eagle extends Animal{
 			@Override
-			public void move() {
+			protected void move() {
 				System.out.println("독수리가 날개를펴고 납니다");
 			}
 			
