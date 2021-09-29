@@ -1,5 +1,7 @@
 package b21_예외처리;
 
+import java.time.DateTimeException;
+
 /**
  * 
  * Exception(예외)
@@ -7,20 +9,34 @@ package b21_예외처리;
  * 2. 컴파일 오류
  * 3. 버그
  *  
- *
- */
+ * throw(호출한 위치로 예외 미루기)
+ **/
 
 public class ExceptionEx {
-	
-	public static void main(String[] args) {
+	public static void arrText() throws ArrayIndexOutOfBoundsException {
 		int[] arr =new int[5];
 		
+		for(int i = 0; i <5; i++) {
+			arr[i] = i;
+			System.out.println(arr[i]);
+		}
+	}
+	
+	
+	public static void main(String[] args) throws Exception {
 		try {
-			for(int i = 0; i <5; i++) {
-				arr[i] = i;
-				System.out.println(arr[1]);
-			}
+			ExceptionEx.arrText();
 			
+			
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("배열의 크기를 초과하여 대입하였습니다.");
+		
+		} catch (SecurityException e) {
+			System.out.println("배열의 크기를 초과하여 대입하였습니다.");
+		
+		} catch (DateTimeException e) {
+			System.out.println("배열의 크기를 초과하여 대입하였습니다.");
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

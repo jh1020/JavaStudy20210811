@@ -1,4 +1,4 @@
-package b20_데이터베이스;
+package b22_윈도우빌더.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,7 @@ import java.sql.SQLSyntaxErrorException;
 
 import db.DBConnectionMgr;
 
-public class LoginDaoImpl {
+public class LoginDaoImpl implements LoginDao {
 	private DBConnectionMgr pool;
 	
 	public LoginDaoImpl() {
@@ -55,6 +55,12 @@ public class LoginDaoImpl {
 		
 		return flag;
 		
+	}
+
+	@Override
+	public String getLoginUserName(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

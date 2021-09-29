@@ -14,3 +14,4 @@ public class Car {
 		System.out.println("Â÷·® ¸ðµ¨: " + model);
 	}
 }
+
