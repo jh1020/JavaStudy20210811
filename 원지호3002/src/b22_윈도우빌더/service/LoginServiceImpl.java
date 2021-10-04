@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Override
-	public int loginTextCheack(String id, String pwd) {
+	public int loginTextCheck(String id, String pwd) {
 		int flag = 0;
 		
 		if(id.length() == 0) {
