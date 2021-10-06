@@ -2,6 +2,7 @@ package b22_孺紫辦網渦.service;
 
 import b22_孺紫辦網渦.dao.LoginDao;
 import b22_孺紫辦網渦.dao.LoginDaoImpl;
+import b22_孺紫辦網渦.dto.UserDto;
 
 /**
  * 
@@ -20,6 +21,7 @@ public class LoginServiceImpl implements LoginService {
 	public LoginServiceImpl() {
 		loginDao = new LoginDaoImpl();
 	}
+	
 	
 	@Override
 	public int loginTextCheck(String id, String pwd) {
@@ -41,5 +43,9 @@ public class LoginServiceImpl implements LoginService {
 		
 	}
 	
-	
+@Override
+	public UserDto getUserDto(String id) {
+		
+		return loginDao;
+	}
 }

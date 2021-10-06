@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLSyntaxErrorException;
 
+import b22_윈도우빌더.dto.UserDto;
 import db.DBConnectionMgr;
 
 public class LoginDaoImpl implements LoginDao {
@@ -24,10 +25,7 @@ public class LoginDaoImpl implements LoginDao {
 		
 		try {
 			con = pool.getConnection();
-			sql = "select count(um.user_id), count(ud.user_id) from"
-					+ " user_mst"
-					+ " nm left outer join user_mst ud on (ud.user_id = um.user_id and ud.user_password = ?)"
-					+ "where um.user_id = ?";
+			sql = "select * from user_mst where user_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, password);
 			pstmt.setString(2, id);
@@ -61,6 +59,56 @@ public class LoginDaoImpl implements LoginDao {
 	public String getLoginUserName(String id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public UserDto getUserDto(String id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int flag = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select * from user_mst where user_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			UserDto userDto = new UserDto();
+			userDto.setUser_id(rs.getString(1));
+			userDto.setUser_pwd(rs.getString(2));
+			userDto.setUser_name(rs.getString(3));
+			userDto.setUser_phone(rs.getString(4));
+			userDto.setUser_email(rs.getString(5));
+			userDto.setUser_gender(rs.getInt(6));
+			
+			
+			try {
+			
+			} catch (SQLSyntaxErrorException e) {
+				System.out.println("sql문법오류");
+			}
+			
+			
+			rs.next();
+			flag = rs.getInt(1) + rs.getInt(2);
+			
+				
+			
+		}catch (ClassNotFoundException e) {
+			System.out.println("데이터베이스 클래스 드라이버가 없습니다.");
+		} catch (NullPointerException e) {
+			System.out.println("spl문법오류로 인해 ResultSet이 생성되지 않았습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return flag;
 	}
 	
 	

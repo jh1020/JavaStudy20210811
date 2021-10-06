@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import b22_윈도우빌더.dao.DeleteUserDao;
+import b22_윈도우빌더.dao.DeleteUserDaoImpl;
+import b22_윈도우빌더.dto.UserDto;
 import b22_윈도우빌더.service.LoginService;
 import b22_윈도우빌더.service.LoginServiceImpl;
 import b22_윈도우빌더.service.SignUpService;
@@ -29,26 +32,30 @@ import javax.swing.JEditorPane;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
 
 public class User2 extends JFrame {
 	
+	private UserDto loginSession;
 
 	private JPanel mainCardPan;
 	private CardLayout cl_mainCardPan;
-	private JTextField id_texf;
-	private JPasswordField passwordField;
+	private JTextField Login_id_tf;
+	private JPasswordField Login_pwd_tf;
 	private JTextField id_tf;
 	private JTextField name_tf;
 	private JTextField phone_tf;
 	private JTextField email_tf;
+	private JComboBox gender_cb;
 	private JPasswordField pwd_tf;
 	private JPasswordField repwd_tf;
+	private JLabel welcomMsg;
 	private String[] gender_list = {"성별", "남성", "여성", "선택하지 않음"};
 	
 	
 	private LoginService loginService;
 	private SignUpService signUpService;
-	
+	private DeleteUserDao deleteUserDao;
 	
 	/**
 	 * Launch the application.
@@ -72,6 +79,8 @@ public class User2 extends JFrame {
 	public User2() {
 		loginService = new LoginServiceImpl();
 		signUpService = new SignUpServiceImpl();
+		deleteUserDao = new DeleteUserDaoImpl(); 
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 655, 445);
@@ -90,23 +99,50 @@ public class User2 extends JFrame {
 		idLable.setHorizontalAlignment(SwingConstants.RIGHT);
 		login_pan.add(idLable);
 		
-		JButton btnNewButton = new JButton("\uB85C\uADF8\uC778");
-		btnNewButton.setBounds(398, 139, 73, 52);
-		login_pan.add(btnNewButton);
+		JButton Login_btn = new JButton("\uB85C\uADF8\uC778");
+		Login_btn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int flag = loginService.loginTextCheack(Login_id_tf.getText(),Login_pwd_tf.getText());
+				if(flag != 2) {
+					String msg = null;
+					if(flag == 0) {
+						msg = "존재하지 않는 아이디입나다.";
+						
+					}else if (flag == 1){
+						msg = "비밀번호를 다시 확인해 주세요";
+					}else if (flag == 3) {
+						msg = "아이디를 입력해 주세요";
+					}else if (flag == 4) {
+						msg = "비밀번호를 입력해 주세요";
+					} 
+						
+					JOptionPane.showMessageDialog(null, msg, "경고", JOptionPane.WARNING_MESSAGE);
+				}
+				
+				else {
+					cl_mainCardPan.show(mainCardPan,"index_pan");
+					loginSession = loginService.getUserDto(Login_id_tf.getName());
+					welcomMsg.setText(loginSession.getUser_name() + "님 환영합니다.");
+				}
+			}
+		});
+		Login_btn.setBounds(398, 139, 73, 52);
+		login_pan.add(Login_btn);
 		
-		id_texf = new JTextField();
-		id_texf.setBounds(230, 139, 156, 23);
-		id_texf.setColumns(10);
-		login_pan.add(id_texf);
+		Login_id_tf = new JTextField();
+		Login_id_tf.setBounds(230, 139, 156, 23);
+		Login_id_tf.setColumns(10);
+		login_pan.add(Login_id_tf);
 		
 		JLabel pwdLable = new JLabel("\uBE44\uBC00\uBC88\uD638");
 		pwdLable.setBounds(162, 173, 57, 15);
 		pwdLable.setHorizontalAlignment(SwingConstants.RIGHT);
 		login_pan.add(pwdLable);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(230, 170, 156, 21);
-		login_pan.add(passwordField);
+		Login_pwd_tf = new JPasswordField();
+		Login_pwd_tf.setBounds(230, 170, 156, 21);
+		login_pan.add(Login_pwd_tf);
 		
 		JButton sign_up = new JButton("\uD68C\uC6D0\uAC00\uC785");
 		sign_up.setBounds(259, 221, 97, 23);
@@ -114,6 +150,17 @@ public class User2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cl_mainCardPan.show(mainCardPan, "sign_up_pan");
+				id_tf.setText("");
+				id_tf.setEditable(true);
+				pwd_tf.setText("");
+				repwd_tf.setText("");
+				name_tf.setText("");
+				phone_tf.setText("");
+				email_tf.setText("");
+				gender_cb.setSelectedIndex(0);
+				
+				Login_id_tf.setText("");
+				Login_pwd_tf.setText("");
 			}
 		});
 		login_pan.add(sign_up);
@@ -205,7 +252,8 @@ public class User2 extends JFrame {
 		repwd_tf.setBounds(258, 130, 213, 21);
 		signup_pan.add(repwd_tf);
 		
-		JComboBox gender_cb = new JComboBox(gender_list);
+		gender_cb = new JComboBox(gender_list);
+		gender_cb.setModel(new DefaultComboBoxModel(new String[] {"\uC120\uD0DD", "\uB0A8\uC131", "\uC5EC\uC131", "\uC120\uD0DD\uD558\uC9C0 \uC54A\uC74C"}));
 		gender_cb.setBounds(258, 254, 213, 21);
 		signup_pan.add(gender_cb);
 		
@@ -220,7 +268,8 @@ public class User2 extends JFrame {
 						name_tf.getText(),
 						phone_tf.getText(),
 						email_tf.getText(),
-						gender_cb.getSelectedItem().toString()
+						gender_cb.getSelectedItem().toString(),
+						Integer.toString(gender_cb.getSelectedIndex())
 				};
 				String errorMsg = signUpService.isEmptyValue(values);
 				if(!errorMsg.equals("values is not null")) {
@@ -229,6 +278,10 @@ public class User2 extends JFrame {
 					errorMsg = signUpService.equalsPassword(pwd_tf.getText(), repwd_tf.getText());
 					if(!errorMsg.equals("password equals")) {
 						JOptionPane.showMessageDialog(null, errorMsg, "비밀번호 오류", JOptionPane.ERROR_MESSAGE);
+					}else {
+						boolean flag = signUpService.signUp(values);
+						JOptionPane.showMessageDialog(null,"회원가입에 성공하였습니다.", "회원가입 성공", JOptionPane.INFORMATION_MESSAGE);
+						cl_mainCardPan.show(mainCardPan, "login_Pan");
 					}
 				}
 				
@@ -248,9 +301,71 @@ public class User2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cl_mainCardPan.show(mainCardPan, "login_Pan");
+				id_tf.setText("");
+				id_tf.setEditable(true);
+				pwd_tf.setText("");
+				repwd_tf.setText("");
+				name_tf.setText("");
+				phone_tf.setText("");
+				email_tf.setText("");
+				gender_cb.setSelectedIndex(0);
 			}
 		});
 		page_back_btn.setBounds(367, 285, 104, 23);
 		signup_pan.add(page_back_btn);
+		
+		JPanel index_pan = new JPanel();
+		mainCardPan.add(index_pan, "index_pan");
+		index_pan.setLayout(null);
+		
+		welcomMsg = new JLabel("New label");
+		welcomMsg.setBounds(12, 10, 57, 15);
+		index_pan.add(welcomMsg);
+		
+		JButton Logout_btn = new JButton("\uB85C\uADF8\uC544\uC6C3");
+		Logout_btn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int flag = JOptionPane.showConfirmDialog(null, "정말 로그아웃 하시겠습니까?", "로그아웃", JOptionPane.YES_NO_OPTION);
+				if(flag == 0) {
+					cl_mainCardPan.show(mainCardPan,"login_pan");
+					loginSession = null;
+					Login_id_tf.setText("");
+					Login_pwd_tf.setText("");
+				}
+			}
+		});
+		Logout_btn.setBounds(520, 6, 97, 23);
+		index_pan.add(Logout_btn);
+		
+		JButton myPage_btn = new JButton("\uB9C8\uC774\uD398\uC774\uC9C0");
+		myPage_btn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cl_mainCardPan.show(mainCardPan, "mypage_pan");
+			}
+		});
+		myPage_btn.setBounds(411, 6, 97, 23);
+		index_pan.add(myPage_btn);
+		
+		JPanel mypage_pan = new JPanel();
+		mainCardPan.add(mypage_pan, "mypage_pan");
+		mypage_pan.setLayout(null);
+		
+		JButton user_drop_btn = new JButton("\uD68C\uC6D0\uD0C8\uD1F4");
+		user_drop_btn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int flag = JOptionPane.showConfirmDialog(null, "정말로 계정을 삭제하시겠습니까?", "회원탈퇴", JOptionPane.YES_NO_OPTION);
+				if(flag == 0) {
+					boolean dropFlag = deleteUserDao.deleteUser(loginSession.getUser_id());
+					cl_mainCardPan.show(mainCardPan, "login_pan");
+					Login_id_tf.setText("");
+					Login_pwd_tf.setText("");
+				}
+			}
+		});
+		user_drop_btn.setBounds(520, 363, 97, 23);
+		mypage_pan.add(user_drop_btn);
 	}
 }
