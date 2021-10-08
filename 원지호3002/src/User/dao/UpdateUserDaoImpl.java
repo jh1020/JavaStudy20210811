@@ -1,19 +1,20 @@
-package b22_À©µµ¿ìºô´õ.dao;
+package User.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import db.DBConnectionMgr;
 
-public class DeleteUserDaoImpl implements DeleteUserDao{
-	private DBConnectionMgr pool;
+public class UpdateUserDaoImpl implements UpdateUserDao{
 	
-	public DeleteUserDaoImpl() {
+	private DBConnectionMgr pool = null;
+	
+	public UpdateUserDaoImpl() {
 		pool = DBConnectionMgr.getInstance();
-		
 	}
+	
 	@Override
-	public boolean deleteUser(String id) {
+	public boolean updatePassword(String id, String password) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -21,15 +22,15 @@ public class DeleteUserDaoImpl implements DeleteUserDao{
 		
 		try {
 			con = pool.getConnection();
-			sql = "delete from user_mst where user_id = ?";
+			sql = "update user_mst set user_password = ? where user_id = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, password);
+			pstmt.setString(2, id);
 			pstmt.executeUpdate();
 			
+			flag = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			pool.freeConnection(con, pstmt);
 		}
 		
 		return flag;

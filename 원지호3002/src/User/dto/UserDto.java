@@ -1,4 +1,4 @@
-package b22_À©µµ¿ìºô´õ.dto;
+package User.dto;
 
 public class UserDto {
 	private String user_id;
@@ -44,6 +44,4 @@ public class UserDto {
 	public void setUser_gender(int user_gender) {
 		this.user_gender = user_gender;
 	}
-	
-	
 }

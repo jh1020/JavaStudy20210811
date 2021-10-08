@@ -1,19 +1,18 @@
-package b22_윈도우빌더.service;
+package User.service;
 
-import b22_윈도우빌더.dao.LoginDao;
-import b22_윈도우빌더.dao.LoginDaoImpl;
-import b22_윈도우빌더.dto.UserDto;
+import User.dao.LoginDao;
+import User.dao.LoginDaoImpl;
+import User.dto.UserDto;
 
 /**
  * 
  * MVC Model
  * 
- * M: model : DB나 다른 데이터들을 담을 수 있는 영역(Dao, Dto, Vo, Bean)
- * V: View : 사용자가 보는 화면
- * C: Controller : 사용자에게 어떤 View를 보여줄건지만 컨트롤하여야함.
- * 
+ * M: Model: DB나 다른 데이터들을 담을 수 있는 영역(DAO, DTO, VO, Bean)
+ * V: View: 사용자가 보는 화면
+ * C: Controller: 사용자에게 어떤 View를 보여줄건지만 컨트롤하여야함.
+ *
  */
-
 
 public class LoginServiceImpl implements LoginService {
 	private LoginDao loginDao;
@@ -21,7 +20,6 @@ public class LoginServiceImpl implements LoginService {
 	public LoginServiceImpl() {
 		loginDao = new LoginDaoImpl();
 	}
-	
 	
 	@Override
 	public int loginTextCheck(String id, String pwd) {
@@ -32,20 +30,27 @@ public class LoginServiceImpl implements LoginService {
 		}else if(pwd.length() == 0) {
 			flag = 4;
 		}else {
-			loginLogic(id, pwd);
+			flag = loginLogic(id, pwd);
 		}
 		return flag;
 	}
-
+	
 	@Override
 	public int loginLogic(String id, String pwd) {
-		return loginDao.login (id, pwd);
-		
+		return loginDao.login(id, pwd);
 	}
 	
-@Override
+	@Override
 	public UserDto getUserDto(String id) {
-		
-		return loginDao;
+		return loginDao.getUserDto(id);
 	}
 }
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-package b22_À©µµ¿ìºô´õ.dao;
+package User.dao;
 
 public interface DeleteUserDao {
 	public boolean deleteUser(String id);

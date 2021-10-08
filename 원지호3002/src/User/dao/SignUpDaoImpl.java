@@ -1,4 +1,4 @@
-package b22_À©µµ¿ìºô´õ.dao;
+package User.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,13 +8,11 @@ import db.DBConnectionMgr;
 
 public class SignUpDaoImpl implements SignUpDao{
 	
-	
 	private DBConnectionMgr pool;
 	
 	public SignUpDaoImpl() {
 		pool = DBConnectionMgr.getInstance();
 	}
-	
 	
 	@Override
 	public int idCheck(String id) {
@@ -23,7 +21,6 @@ public class SignUpDaoImpl implements SignUpDao{
 		ResultSet rs = null;
 		String sql = null;
 		int flag = 2;
-		
 		
 		try {
 			con = pool.getConnection();
@@ -40,16 +37,14 @@ public class SignUpDaoImpl implements SignUpDao{
 		}
 		
 		return flag;
-		
-		
 	}
+	
 	@Override
-	public boolean sigUp(String[] values) {
+	public boolean signUp(String[] values) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
-		
 		
 		try {
 			con = pool.getConnection();
@@ -60,16 +55,25 @@ public class SignUpDaoImpl implements SignUpDao{
 			pstmt.setString(3, values[3]);
 			pstmt.setString(4, values[4]);
 			pstmt.setString(5, values[5]);
-			pstmt.setInt(6,Integer.parseInt(values[7]));
+			pstmt.setInt(6, Integer.parseInt(values[7]));
 			pstmt.executeUpdate();
 			
-			flag = true ;
-		}catch (Exception e) {
+			flag = true;
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			pool.freeConnection(con,pstmt);
+		} finally {
+			pool.freeConnection(con, pstmt);
 		}
 		
 		return flag;
 	}
 }
+
+
+
+
+
+
+
+
+
